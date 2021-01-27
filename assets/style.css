@@ -1,0 +1,22 @@
+body {
+    color: white;
+    background-color: #303030;
+  }
+
+.fixa{
+  position: fixed;
+  top: 25px;
+  opacity: 90%;
+  }
+#jsoninfo{
+    display:block;
+    margin-bottom: 100px;
+    margin-bottom: 100px;
+}
+#jsontext{
+  display:none;
+  
+}
+#checkgrades{
+  margin-top: 20px;
+}

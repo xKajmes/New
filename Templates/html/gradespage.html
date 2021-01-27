@@ -1,0 +1,85 @@
+{{define "gradespage.tmpl"}}
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Witaj</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="/assets/script.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="/assets/style.css">
+  <script>    
+    var url = $(location).attr('href');
+    var parts = url.split("=");
+    id = parts[parts.length - 1]
+    console.log("id to :"+ id)
+    document.getElementById("idstudent").Value = id;
+    </script>
+</head>
+
+<body onload="CheckGrades(id)">
+  <nav class="navbar navbar-expand-sm bg-primary navbar-dark" style="padding-left: 5%;">
+    <ul class="navbar-nav">
+      <a class="navbar-brand" href="#">PANEL Nauczyciel</a>
+      <li class="nav-item active">
+        <button type="button" class="btn btn-primary" onclick="Logout()"> Wyloguj </button>
+      </li>
+      <li class="nav-item active">
+        <button type="button" class="btn btn-primary" onclick="location.href='/teacher/panel';"> Strona Główna </button>
+      </li>
+    </ul>
+  </nav>
+  <div class="container">
+    
+    <div id="jsoninfo">
+    </div>
+    <!-- <button type="button" class="btn btn-primary" onclick="location.href='/teacher/panel';"> Dodaj ocene </button> -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddGradeModal">
+      Dodaj ocene
+    </button>
+    <div id="checkgrades">
+      
+    </div>
+
+  </div>
+ 
+<div class="modal fade" id="AddGradeModal" tabindex="-1" role="dialog" aria-labelledby="AddGradeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AddGradeModalLabel" style="color:black">Dodaj ocene studentowi:<p id="getname"></p><script>GetNameStudent(id)</script></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="color:black">
+        <form>
+          <div class="form-group">
+            <label for="grade">Ocena</label>
+            <input type="number" class="form-control" id="grade" name="grade" placeholder="Ocena" min="1"  max="6">
+          </div>
+          <div class="form-group">
+            <label for="comment">Komentarz</label>
+            <input type="text" class="form-control" id="comment" name="comment" placeholder="Komentarz"  minlength="1"  maxlength="30">
+            <input type="hidden" class="form-control" id="idstudent" name="idstudent" placeholder="idstudent">
+          </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-primary" onclick="AddGradeClick(id)">Dodaj</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+</div>                  
+</body>
+</html>
+
+
+{{end}}
