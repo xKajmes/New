@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"fmt"
-	"net/http"
+	//"net/http"
 	"new/auth"
 	"new/config"
 	"new/models"
@@ -12,23 +12,17 @@ import (
 )
 
 // Login ...
-func Login(c *gin.Context) {	// Logowanie
+func Login(c *gin.Context) {	
 	var user models.User
 	c.BindJSON(&user)
 	err := models.Login(&user)
 	if(err == "Zalogowano"){
+
 		ts, err := auth.CreateToken(user.ID)
 		if err != nil {
 			c.JSON(422, err.Error())
 		  	return
 	   	}
-		// saveErr := auth.CreateAuth(ts)
-		//  if saveErr != nil {
-		// 	c.JSON(422, saveErr.Error())
-		//  }
-		//  tokens := map[string]string{
-		// 	"access_token":  ts.AccessToken 
-		//  }
 		look := models.LookVerify(user.ID)
 		if look != true {
 			c.JSON(303, gin.H{"error:": "Nie zwerifykiowaleś konta!"})
@@ -36,43 +30,23 @@ func Login(c *gin.Context) {	// Logowanie
 		} 
 		fmt.Print("verify")
 		token := ts.AccessToken
-
-
 		c.SetCookie("Auth", token, 10800, "/", "", false, true)	
-
-
-
-		fmt.Println(look)
+		//fmt.Println(look)
 		iduser, _ := auth.ExtractTokenMetadata(token)
-		
 		c.JSON(200, gin.H{
 			"look": look,
 			"token": token,
 			"userid": iduser.UserID ,
-		}) //: ts
-		//fmt.Println(iduser.UserID)
-		
-
-		// token, err := auth.CreateToken(user.ID)
-		// if err != nil {
-		// 	c.JSON(404, gin.H{"Komunikat": err.Error()})
-		// 	return
-	   	// }
-		// c.JSON(200, gin.H{"Komunikat": token}) //: ts
-		// c.Redirect(200, "/home")
+		}) 
 	}else{
 		c.JSON(404, gin.H{"error": err})
 	}
-	
-
-
 }
 // Register ...
 func Register(c *gin.Context) {	// Rejestracja
 	var user models.User
 	c.BindJSON(&user)
 	err := models.Register(&user)
-	
 	if(err == "Zarejestrowano"){
 		var student models.Student
 		student.ID = user.ID
@@ -81,12 +55,12 @@ func Register(c *gin.Context) {	// Rejestracja
 		student.Surname = ""
 		create := models.AddStudent(&student)
 		if create != nil {
-			c.JSON(404, gin.H{"error:": "cos nie tak"})
-			fmt.Println("Nie można stworzyć studenta")
-		} else {
+			c.JSON(404, gin.H{"error:": "Nie można stowrzyć studenta"})
+			//fmt.Println("Nie można stworzyć studenta")
+		}else {
 			verifykey , err := auth.CreateVerify(user.ID)
 			if err != nil {
-				c.JSON(404, gin.H{"error:": "cos nie tak"})
+				c.JSON(404, gin.H{"error:": "Nie można stworzyć kodu werifykacyjnego"})
 				fmt.Println("Nie można stworzyć verifykey")
 			} else {
 				c.JSON(200, gin.H{"Verify": verifykey }) //: ts
@@ -100,23 +74,16 @@ func Register(c *gin.Context) {	// Rejestracja
 				} 
 				c.JSON(200, gin.H{"Komunikat": "Dodano do bazy" }) //: ts
 				fmt.Println("Stworzono")
-				//email := email.Send(verifykey, user.ID)
-				// if email != nil {
-				// 	c.JSON(404, gin.H{"error": "Cos poszlo nie tak"})
-				// } 
-				
 			}
 		}
 	}else{
 		c.JSON(404, gin.H{"Komunikat": err})
 		fmt.Println("Nie można zarejestrowac")
 	}
-
 }
 
 // LookToken ...
 func LookToken(c *gin.Context) (uint) {	// Strona rejestracji
-	
 	cookie, _ := c.Cookie("Auth")
 	iduser, _ := auth.ExtractTokenMetadata(cookie)
 	fmt.Println(iduser.UserID)
@@ -125,15 +92,13 @@ func LookToken(c *gin.Context) (uint) {	// Strona rejestracji
 
 // LogoutNow ... 
 func LogoutNow(c *gin.Context){
-	
+
 	c.SetCookie("Auth", "Logout", -1, "/", "", false, true)	
 	c.JSON(200, gin.H{"Komunikat": "wylogowano" }) //: ts
-	c.Redirect(http.StatusMovedPermanently, "http://www.google.com/")
-	//c.Redirect(http.StatusSeeOther, "/login")
+	// c.Redirect(http.StatusMovedPermanently, "http://www.google.com/")
+	// c.Redirect(http.StatusSeeOther, "/login")
 	// c.Redirect(301, "/auth/login")
 	 c.Abort()
-	
-
 } 
 // Verification ...
 func Verification(c *gin.Context) {
@@ -146,11 +111,7 @@ func Verification(c *gin.Context) {
 	err := models.EditUser(&user,&newuser,idtoverify)
 	if err != nil {
 		c.JSON(404, gin.H{"error": "Cos poszlo nie tak"})
-
 	} else {
-		
 			c.JSON(200, gin.H{"Pomyslnie Zwerifykowano:": idtoverify})
-		
-		
 		}
 }
