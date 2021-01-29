@@ -77,6 +77,18 @@ func HTML() *gin.Engine {
 		teacher.DELETE("/grades/:id", controllers.DelGrade) // Usuwanie
 
 	}
+	dziekan := r.Group("/dziekan")
+	r.Use(middleware.AuthTeacher())
+	{
+		dziekan.GET("/dziekan", controllers.DziekanPage)
+		teacher.GET("/class", controllers.TeacherClass)
+		teacher.GET("/lookclass", controllers.LookClass) // Zobacz klase
+		teacher.GET("/grades/:id", controllers.LookGrades) // Zobaczenie oceny
+		teacher.GET("/grades", controllers.GradesPage) // HTML
+		teacher.POST("/grades", controllers.AddGrade) // Dodawanie
+		teacher.DELETE("/grades/:id", controllers.DelGrade) // Usuwanie
+
+	}
 	r.GET("/cookie", func(c *gin.Context) {
 		cookie := "DZIALA"
 

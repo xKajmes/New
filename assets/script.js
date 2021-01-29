@@ -328,27 +328,7 @@ function Login() {
             
                 })
                 console.log("Rola to:" + role)
-                // if(role == "teacher"){
-                //     location.href='/teacher/panel';
-                // }else{
-                // location.href='/home';
-                // }
-                // // document.cookie = "token="+token;
-                // // document.cookie = 'cookie=ok;expires='+now.toUTCString()+';path=/';
-                // var now = new Date();
-                // var time = now.getTime();
-                // var expireTime = time + 250*36000;
-                // now.setTime(expireTime);
-                // document.cookie = 'token='+token+';expires='+now.toUTCString()+';path=/';
-                // console.log(document.cookie);  // 'Wed, 31 Oct 2012 08:50:17 UTC'
-                // //location.href("/home")
-                // var decodejwt = parseJwt(token);
-                // console.log('Zdekodowany jwt')
-                // console.log(decodejwt)
-                // console.log('USER ID:')
-                // console.log(decodejwt.user_id)
-                //location.href = "home";
-               // SessionStart(nick)
+
             },
             error: function(data) {
                 console.log(data.responseText);

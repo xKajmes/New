@@ -73,3 +73,10 @@ func GradesPage(c *gin.Context) {	// Strona rejestracji
 	})
 
 }
+// DziekanPage ...
+func DziekanPage(c *gin.Context) {	// Strona rejestracji
+	c.HTML(200, "dziekanpage.tmpl", gin.H{
+		
+	})
+
+}
