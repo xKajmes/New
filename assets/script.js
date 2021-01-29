@@ -301,7 +301,33 @@ function Login() {
                 iduser = data.userid
                 console.log(" ")
                 console.log(iduser)
-                location.href='/home';
+                //rolaaa = "idk"
+                //rolaaa = LookRole()
+                role = "idk"
+                $.ajax({
+                    type: "GET",
+                    url: "/panel/lookrole/",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: "json",
+                    success: function(results) {
+                        if(results == "teacher"){
+                               location.href='/teacher/panel';
+                            }else{
+                                location.href='/home';
+                        }
+                    },
+                    error: function(results) {
+                        location.href='/home';
+            
+                    }
+            
+                })
+                console.log("Rola to:" + role)
+                // if(role == "teacher"){
+                //     location.href='/teacher/panel';
+                // }else{
+                // location.href='/home';
+                // }
                 // // document.cookie = "token="+token;
                 // // document.cookie = 'cookie=ok;expires='+now.toUTCString()+';path=/';
                 // var now = new Date();
@@ -375,8 +401,22 @@ function Register() {
 }
 
 function Logout() {
-    location.href = "/logoutnow"
     
+    
+    $.ajax({
+        type: "GET",
+        url: "/logoutnow",
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        success: function(results) {
+            location.href = "/login"
+        },
+        error: function(results) {
+            location.href = "/login"
+
+        }
+
+})
 
 }
 
@@ -461,7 +501,27 @@ function MyID(){
         }
 
 })
-    
+}
+function LookRole(){
+ var role
+    $.ajax({
+        type: "GET",
+        url: "/panel/lookrole/",
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        success: function(results) {
+           role = results;
+           //console.log("TUTAJ"+role)
+           console.log("Rola to z LOOKROLE():" + role)
+           //
+        },
+        error: function(results) {
+            console.log(results.responseText)
+
+        }
+
+    })
+    return role;
 }
 // }
 
@@ -524,4 +584,3 @@ function Round(n, k)
 }
 
 
-    

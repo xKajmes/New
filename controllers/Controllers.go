@@ -112,17 +112,23 @@ func GetOne(c *gin.Context) {	// Pobieranie danych jednego studenta
 func LookRole(c *gin.Context) (string) {
 	iduser := LookToken(c)
 	var role string
-	config.DB.Raw("SELECT role FROM User WHERE id = ?", &iduser).Scan(&role) // Pobranie passwordhash z database
+	config.DB.Raw("SELECT role FROM User WHERE id = ?", &iduser).Scan(&role) 
 	return role
+} 
+// LookRolePage ...
+func LookRolePage(c *gin.Context){
+	role := LookRole(c);
+	fmt.Println(role)
+	c.JSON(200, role)
 } 
 
 // LookClass ...
 func LookClass(c *gin.Context) {	// Pobieranie klasy dla nauczyciela
 	iduser := LookToken(c)
 	idclass := 0;
-	config.DB.Raw("SELECT id FROM Class WHERE id_tutor = ?", &iduser).Scan(&idclass) // Pobranie passwordhash z database
+	config.DB.Raw("SELECT id FROM Class WHERE id_tutor = ?", &iduser).Scan(&idclass) 
 	var student []models.Student
-	config.DB.Raw("SELECT * FROM Student WHERE id_class = ?", &idclass).Scan(&student) // Pobranie passwordhash z database
+	config.DB.Raw("SELECT * FROM Student WHERE id_class = ?", &idclass).Scan(&student) 
 	c.JSON(200, student )
 	
 } 

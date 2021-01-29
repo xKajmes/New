@@ -61,6 +61,7 @@ func HTML() *gin.Engine {
 		panel.DELETE("/student/:id", controllers.DeleteStudent)
 		panel.PUT("/student/:id", controllers.EditStudent)
 		panel.POST("/completeme", controllers.CompleteMe)
+		panel.GET("/lookrole", controllers.LookRolePage)
 		panel.GET("/myid", controllers.MyID)
 	}
 	//r.GET("/teacher",middleware.AuthTeacher(), controllers.Teacher)
