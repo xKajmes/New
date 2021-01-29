@@ -39,7 +39,7 @@ function GetMyClass() {
             istnieje = true;
             d = document.createElement('table');
             $(d).addClass('table table-striped table-light')
-            $(d).insertAfter($("#jsoninfo")) //main div
+            $(d).insertAfter($("#checkgrades")) //main div
              $(d).html("<thead class='thead-light'> <tr><th scope='col'>#</th><th scope='col'>Imie</th><th scope='col'>Nazwisko</th><th scope='col'>Wiek</th><th scope='col'>Oceny</th></tr></thead><tbody>"); //<th scope='col'>Usuń</th><th scope='col'>Edytuj</th>
              for (var i in results) {
                                 // "<a  onclick='DeleteStudent(" + results[i].ID + ");'>Usuń</a>" + "</td><td> " + "<a  onclick='EditStudent(" + results[i].id + ");'>Edytuj</a>"
@@ -61,37 +61,42 @@ function GetNameStudent(id){
 })
 }
 
-function AddGradeClick(id){
+function AddGradeClick(){
     //id = $("#studentid").val()
     console.log($("#grade").val())
     console.log($("#comment").val())
     
-    idteacher = MyID()
-    console.log(idteacher)
-    idstudent = id
-    console.log($("#idstudent").val())
+    //idteacher = MyID()
+    //var ajaxObj = MyID();
+    // store ajax response in var
+
+    // check ajax response
+    // console.log("Aktualny:"+MyID())
+    // idteacher = id
+    // console.log("IDTEACHER: " + id)
+    // console.log("IDUCZNIA: " + $("#idstudent").val())
     //console.log(MyID())
     $.ajax({
-        type: "POST",
+        method: "POST",
         url: "/teacher/grades",
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify({
-            number: $("#grade").val(),
+            number: parseInt($('#grade').val(), 10),
             comment: $("#comment").val(),
-            id_student: $("#idstudent").val(),
-            id_teacher: MyID()
+            id_student: parseInt($('#idstudent').val(), 10)
+            
         }),
         dataType: "json",
         success: function() {
             console.log('sukces')
-            $("#EditModal").modal('hide');
+            $("#AddGradeModal").modal('hide');
             alertbs('success', '#jsoninfo', 'Pomyślnie zedytowano studenta o id = ' + id)
             //GetAllStudents()
 
         },
         error: function() {
             console.log('alert')
-            $("#EditModal").modal('hide');
+            $("#AddGradeModal").modal('hide');
             alertbs('danger', '#jsoninfo', 'Coś poszło nie tak! ')
 
         }
@@ -485,16 +490,12 @@ function DelGrade(id){
 }
 function MyID(){
 
-    $.ajax({
+    return $.ajax({
         type: "GET",
         url: "/panel/myid/",
         contentType: 'application/json; charset=utf-8',
         dataType: "json",
-        success: function(results) {
-           idteacher = results.id;
-           console.log("ID TEACHER:"+idteacher)
-           return idteacher;
-        },
+        async: !1,
         error: function(results) {
             console.log(results.responseText)
 

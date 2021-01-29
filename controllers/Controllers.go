@@ -150,11 +150,13 @@ func LookGrades(c *gin.Context) {	// Pobieranie danych jednego studenta
 
 // AddGrade ...
 func AddGrade(c *gin.Context) {	// Pobieranie danych jednego studenta
-	// idtutor := LookToken(c)
+	idtutor := LookToken(c)
+	idnew := uint64(idtutor)
 	// id := c.Params.ByName("id")
 	// idstudent, _ := strconv.Atoi(id)
 	var grades models.Grade
 	c.BindJSON(&grades)
+	grades.ID_Teacher = idnew
 	err := models.AddGrade(&grades)
 	if err != nil {
 		c.JSON(404, gin.H{"error:": "Nie mozna dodac oceny"})
