@@ -24,16 +24,14 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		c.JSON(303, "Nie masz dostępu do tej strony!")
 	}
 		cookie := auu.Value
-	   error := auth.TokenValid(cookie)
-	   if error != nil {
-		  //c.JSON(303, error.Error())
-		  c.HTML(200, "access.tmpl", gin.H{
-			
-		})
-		c.JSON(303, error.Error())
-		  c.Abort()
-		  return
-	   }
+	   	error := auth.TokenValid(cookie)
+	   	if error != nil {
+		  	c.HTML(200, "access.tmpl", gin.H{
+			})
+			c.JSON(303, error.Error())
+		  	c.Abort()
+		  	return
+	   	}
 	   token, err := jwt.Parse(cookie, nil)
 	   if token == nil {
 		   return 
@@ -60,8 +58,41 @@ func AuthTeacher() gin.HandlerFunc {
 	   }
 	   role := controllers.LookRole(c)
 		
-	   if(role=="nauczyciel"){
+	   if(role=="teacher"||role=="dziekan"){
 		   c.Next()
+	   }else{
+		c.HTML(200, "access.tmpl", gin.H{
+		})
+		c.JSON(303, error.Error())
+		  c.Abort()
+		  return
+	   }
+	   
+	}
+  }
+// AuthDziekan ...
+func AuthDziekan() gin.HandlerFunc {
+	return func(c *gin.Context) {
+	   cookie, err := c.Cookie("Auth")
+	   if err != nil {
+		c.JSON(303, "Nie masz cookies jwt")
+	}
+	   	error := auth.TokenValid(cookie)
+	   	if error != nil {
+		  	c.JSON(303, error.Error())
+		  	c.Abort()
+		  	return
+	   	}
+	   	role := controllers.LookRole(c)
+		
+	   	if(role=="dziekan"){
+		   c.Next()
+	   	}else{
+			c.HTML(200, "access.tmpl", gin.H{
+			})
+			c.JSON(303, error.Error())
+		 	c.Abort()
+		  	return
 	   }
 	   
 	}

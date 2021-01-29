@@ -316,9 +316,13 @@ function Login() {
                     dataType: "json",
                     success: function(results) {
                         if(results == "teacher"){
-                               location.href='/teacher/panel';
-                            }else{
-                                location.href='/home';
+                            location.href='/teacher/panel';
+                        }
+                        if(results == "dziekan"){
+                            location.href='/dziekan/panel';
+                        }
+                        else{
+                            location.href='/home';
                         }
                     },
                     error: function(results) {
@@ -362,17 +366,21 @@ function Register() {
                 console.log('sukces');
                 console.log(data.responseText);
                 //alert('success', '#jsoninfo', '<a href="google.com">KLIKNIJ TUTAJ</a>')
+                var adres = "http://localhost:8080/auth/verify/"+data.Verify;
+                console.log(adres);
                 $('#RegisterButton').attr("disabled", false);
                 $('#RegisterButton').html("Zarejestrowano!");
-                console.log('http://localhost:8080/register')
+                //console.log('http://localhost:8080/register')
                 //location.href = "login?register=succes";
                 
             },
             error: function(data) {
                 
                 alert(data.responseText );
-                console.log('cosnietak');
                 console.log(data.responseText);
+                console.log(data[1])
+                let adres = "http://localhost:8080/auth/verify/" + data.Verify;
+                console.log(adres);
                 alertbs('danger', '#jsoninfo', 'Podany login już istnieje! ')
                 $('#RegisterButton').attr("disabled", false);
                 $('#RegisterButton').html("Zarejestruj ")
@@ -504,6 +512,31 @@ function LookRole(){
     })
     return role;
 }
+function GetAllDziekan(){
+    $.ajax({
+        type: "GET",
+        url: "/dziekan/panel" ,
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        success: function(results) {
+            dziekan = document.createElement('table');
+            $(dziekan).addClass('table table-striped table-light')
+            $(dziekan).insertAfter($("#checkgrades")) //main div
+            $(dziekan).html("<thead class='thead-light'> <tr><th scope='col'>Ocena</th><th scope='col'>Data</th><th scope='col'>Komentarz</th><th scope='col'>Usuń</th></thead><tbody>");
+            for (var i in results) {
+                $(dziekan).append("<tr><th scope='row'>" + results[i].number + "</th><td>" + day + " " + hour + "</td><td> " + results[i].comment + "</td> <td>" + "<a  onclick='DelGrade(" + results[i].ID + ");'>Usuń</a></td></tr>");
+                results[i].number;
+            }
+
+        },
+        error: function(results) {
+            console.log(results.responseText)
+
+        }
+    })
+}
+
+
 // }
 
 // function SessionStart(login) {

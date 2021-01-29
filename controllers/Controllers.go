@@ -29,6 +29,16 @@ func AddStudent(c *gin.Context) {
 	}
 
 }
+// ListAll ...
+func ListAll(c *gin.Context) {
+	var users []models.User
+	err := models.GetDziekanStudents(&users)
+	if err != nil {
+		c.JSON(404, gin.H{"error:": "Nie mozna pobrac uzykownikow"})
+	} else {
+			c.JSON(200, users )
+	}
+}
 // ListStudent ...
 func ListStudent(c *gin.Context) {
 	var student []models.Student

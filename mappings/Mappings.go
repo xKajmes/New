@@ -55,7 +55,7 @@ func HTML() *gin.Engine {
 	{
 		panel.GET("/student", controllers.ListStudent)
 		//panel.GET("/logout", controllers.Logout)
-		r.Use(middleware.TokenAuthMiddleware())
+		panel.Use(middleware.TokenAuthMiddleware())
 		panel.POST("/student", controllers.AddStudent)
 		panel.GET("/student/:id", controllers.GetOne)
 		panel.DELETE("/student/:id", controllers.DeleteStudent)
@@ -66,7 +66,7 @@ func HTML() *gin.Engine {
 	}
 	//r.GET("/teacher",middleware.AuthTeacher(), controllers.Teacher)
 	teacher := r.Group("/teacher")
-	r.Use(middleware.AuthTeacher())
+	teacher.Use(middleware.AuthTeacher())
 	{
 		teacher.GET("/panel", controllers.Teacher)
 		teacher.GET("/class", controllers.TeacherClass)
@@ -78,15 +78,11 @@ func HTML() *gin.Engine {
 
 	}
 	dziekan := r.Group("/dziekan")
-	r.Use(middleware.AuthTeacher())
+	dziekan.Use(middleware.AuthDziekan())
 	{
-		dziekan.GET("/dziekan", controllers.DziekanPage)
-		teacher.GET("/class", controllers.TeacherClass)
-		teacher.GET("/lookclass", controllers.LookClass) // Zobacz klase
-		teacher.GET("/grades/:id", controllers.LookGrades) // Zobaczenie oceny
-		teacher.GET("/grades", controllers.GradesPage) // HTML
-		teacher.POST("/grades", controllers.AddGrade) // Dodawanie
-		teacher.DELETE("/grades/:id", controllers.DelGrade) // Usuwanie
+		dziekan.GET("/panel", controllers.DziekanPage)
+		dziekan.GET("/list", controllers.ListAll)
+
 
 	}
 	r.GET("/cookie", func(c *gin.Context) {

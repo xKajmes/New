@@ -25,7 +25,7 @@ type User struct {
 	Password   string `json:"password"`
 	Role string `gorm:"default:student" json:"role"` 
 	Verify bool `gorm:"default:false" json:"verify"` 
-	
+	Dziekan bool `gorm:"default:false" json:"dziekan"`
 }
 // TableName ...
  func (b *User) TableName() string {

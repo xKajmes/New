@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"strconv"
 	//"net/http"
 	"new/auth"
 	"new/config"
@@ -113,5 +114,19 @@ func Verification(c *gin.Context) {
 		c.JSON(404, gin.H{"error": "Cos poszlo nie tak"})
 	} else {
 			c.JSON(200, gin.H{"Pomyslnie Zwerifykowano:": idtoverify})
+		}
+}
+// VerifyDziekan ...
+func VerifyDziekan(c *gin.Context) {
+	id := c.Params.ByName("id")
+	idverify, _ := strconv.Atoi(id)
+	var user models.User
+	var newuser models.User
+	newuser.Dziekan = true
+	err := models.EditUser(&user,&newuser,idverify)
+	if err != nil {
+		c.JSON(404, gin.H{"error": "Cos poszlo nie tak"})
+	} else {
+			c.JSON(200, gin.H{"Pomyslnie Zwerifykowano:": idverify})
 		}
 }

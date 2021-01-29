@@ -1,27 +1,19 @@
 package models
 
 import (
-	"fmt"
 	"new/config"
 )
 
 // GetAllStudent ...
 func GetAllStudent(s *[]Student) (err error) {
-	fmt.Printf("AUUUU MAMY TO 1")
-	// var c *gin.Context
-	// role := config.LookRole(c)
-	// teacherid := config.LookToken(c)
-	// if(role=="teacher"){
-	// 	fmt.Printf("AUUUU MAMY TO 2")
-	// 	class := &Class{}
-	// 	//config.DB.Where("id_tutor <> ?", teacherid).Find(&class)
-	// 	idclass := config.DB.Select("id").Where("id_tutor <> ?", teacherid).First(&class)
-	// 	if err = config.DB.Where("id_class <> ?", idclass).Find(s).Error; err != nil {
-	// 		return err
-	// 	}
-	// 	return nil
-	// }
 	if err = config.DB.Find(s).Error; err != nil {
+		return err
+	}
+	return nil
+}
+// GetDziekanStudents ...
+func GetDziekanStudents(u *[]User) (err error)   {
+	if err = config.DB.Find(u).Error; err != nil {
 		return err
 	}
 	return nil

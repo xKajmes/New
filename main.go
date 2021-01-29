@@ -44,7 +44,7 @@ func main() {
 	db.AutoMigrate(&models.Verify{})
 	dziekan := &models.User{}
 	dziekan.Login = "Dziekan"
-	dziekan.Password, _ = config.HashPassword("12qwaszx")
+	dziekan.Password, _ = config.HashPassword("12345")
 	dziekan.Role = "dziekan"
 	dziekan.Verify = true
 	szukaj := db.Where("login = ?", dziekan.Login).Find(&dziekan)	// Jeżeli użytkownik istnieje
@@ -53,7 +53,7 @@ func main() {
 	}
 	admin := &models.User{}
 	admin.Login = "Admin"
-	admin.Password, _ = config.HashPassword("12qwaszx")
+	admin.Password, _ = config.HashPassword("12345")
 	admin.Role = "admin"
 	admin.Verify = true
 	szukaj = db.Where("login = ?", admin.Login).Find(&admin)	// Jeżeli użytkownik istnieje
@@ -82,7 +82,7 @@ func main() {
 	user.Password, _ = config.HashPassword("12345")
 	user.Verify = true
 	user2 := &models.Student{}
-	user2.ID = user.ID
+	user2.ID = 4
 	user2.Name = "Kamil"
 	user2.Surname = "Ziemann"
 	user2.Age = "18"
@@ -95,7 +95,7 @@ func main() {
 
 	grade := &models.Grade{}
 	grade.ID_Teacher = 3
-	grade.ID_Student = 1
+	grade.ID_Student = 4
 	grade.Number = 4
 	grade.Comment = "ZA PRACE DOMOWĄ KURWA"
 	db.Create(&grade)
