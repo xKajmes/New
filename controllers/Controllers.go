@@ -13,7 +13,7 @@ import (
 //	Zarządzanie Studetami
 
 // AddStudent ...
-func AddStudent(c *gin.Context) {		// Proces dodawania studenta
+func AddStudent(c *gin.Context) {	
 	var student models.Student
 	c.BindJSON(&student)
 	err := models.AddStudent(&student)
@@ -21,9 +21,8 @@ func AddStudent(c *gin.Context) {		// Proces dodawania studenta
 		c.JSON(404, gin.H{"error:": "cos nie tak"})
 	} else {
 		// role := LookRole(c)
-		
 		// if(role=="dziekan" || role=="admin"){
-			c.JSON(200, gin.H{"stworzono:": "pomyslnbie"})
+			c.JSON(200, gin.H{"stworzono:": "pomyslnie"})
 		// }
 
 		
@@ -31,59 +30,46 @@ func AddStudent(c *gin.Context) {		// Proces dodawania studenta
 
 }
 // ListStudent ...
-func ListStudent(c *gin.Context) {	// Pobieranie wszystkich studentow
+func ListStudent(c *gin.Context) {
 	var student []models.Student
 	err := models.GetAllStudent(&student)
 	if err != nil {
 		c.JSON(404, gin.H{"error:": "Nie mozna pobrac studentow"})
 	} else {
-		
-
 			c.JSON(200, student )
 		
 	}
 }
 // DeleteStudent ...
-func DeleteStudent(c *gin.Context) {	// Usuwanie Studnetow
-	// //var student Models.Student
+func DeleteStudent(c *gin.Context) {	// Dodalem role 
 	id := c.Params.ByName("id")
 	idusun, _ := strconv.Atoi(id)
-	
-	err := models.DeleteStudent(idusun) // Usuwanie studenta o id=idusun
-		
-	if err != nil {
-		c.JSON(404, gin.H{"error": "Cos poszlo nie tak"})
-	} else {
-
-		role := LookRole(c)
-		
-		if(role=="dziekan" || role=="admin"){
+	role := LookRole(c)
+	if(role=="dziekan" || role=="admin"){
+		err := models.DeleteStudent(idusun) 
+		if err != nil {
+			c.JSON(404, gin.H{"error": "Cos poszlo nie tak"})
+		} else {
 			c.JSON(200, gin.H{"Deleted": id})
 		}
-		
 	}
 }
 // EditStudent ...
-func EditStudent(c *gin.Context) {		// Edytowanie studenta : Dziala takze po wpisaniu jedengo elementu
+func EditStudent(c *gin.Context) {		
 	role := LookRole(c)
 	myid := LookToken(c)
 	// Cos jest nie tak w jquery z pobieraniem nowej wartosci input'ow
 	id := c.Params.ByName("id")
 	idedit, _ := strconv.Atoi(id)
 	if(role=="dziekan" || role=="admin" || int(myid)==idedit){
-		
-	var student models.Student
-	var newstudent models.Student
-	c.BindJSON(&newstudent)
-	err := models.EditStudent(&student,&newstudent,idedit)
-	if err != nil {
-		c.JSON(404, gin.H{"error": "Cos poszlo nie tak"})
-
-	} else {
-		
+		var student models.Student
+		var newstudent models.Student
+		c.BindJSON(&newstudent)
+		err := models.EditStudent(&student,&newstudent,idedit)
+		if err != nil {
+			c.JSON(404, gin.H{"error": "Cos poszlo nie tak"})
+		} else {
 			c.JSON(200, gin.H{"Pomyslnie edytowano:": id})
-		
-		
 		}
 	}
 }
@@ -98,9 +84,8 @@ func CompleteMe(c *gin.Context) {		// Edytowanie studenta : Dziala takze po wpis
 	err := models.EditStudent(&student,&newstudent,int(id))
 	if err != nil {
 		c.JSON(404, gin.H{"error": "Cos poszlo nie tak"})
-
 	} else {
-	
+		c.JSON(200, gin.H{"error": "Pomyslnie edytowano!"})
 	}
 }
 // MyID ...
@@ -120,7 +105,6 @@ func GetOne(c *gin.Context) {	// Pobieranie danych jednego studenta
 		c.JSON(404, gin.H{"error:": "Nie mozna pobrac studentow"})
 	} else {
 		c.JSON(200, student )
-
 	}
 }
 
@@ -129,12 +113,11 @@ func LookRole(c *gin.Context) (string) {
 	iduser := LookToken(c)
 	var role string
 	config.DB.Raw("SELECT role FROM User WHERE id = ?", &iduser).Scan(&role) // Pobranie passwordhash z database
-	//fmt.Println(role)
 	return role
 } 
 
 // LookClass ...
-func LookClass(c *gin.Context) {
+func LookClass(c *gin.Context) {	// Pobieranie klasy dla nauczyciela
 	iduser := LookToken(c)
 	idclass := 0;
 	config.DB.Raw("SELECT id FROM Class WHERE id_tutor = ?", &iduser).Scan(&idclass) // Pobranie passwordhash z database
@@ -151,16 +134,11 @@ func LookGrades(c *gin.Context) {	// Pobieranie danych jednego studenta
 	id := c.Params.ByName("id")
 	idstudent, _ := strconv.Atoi(id)
 	var grades []models.Grade
-	fmt.Println("LISTA W LOOKGRADES")
-	fmt.Println(idtutor)
-	fmt.Println(idstudent)
-	fmt.Println("---------------")
 	err := models.GetGrades(&grades,idtutor,idstudent)
 	if err != nil {
 		c.JSON(404, gin.H{"error:": "Nie mozna pobrac ocen"})
 	} else {
 		c.JSON(200, grades )
-
 	}
 }
 

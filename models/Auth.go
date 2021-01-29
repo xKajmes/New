@@ -6,8 +6,7 @@ import (
 )
 
 // KeyDB ...
-func KeyDB(v *Verify) (err error){
-	
+func KeyDB(v *Verify) (err error){	// Stworzenie kodu weryfikacyjnego do bazy danych
 	if err = config.DB.Create(v).Error; err != nil {
 		return err
 	}
